@@ -29,7 +29,7 @@ Pour cela, il vous suffit simplement d'enregistrer le jeton d'accès directement
 file.edit("~/.Renviron")
 ```
 
-Cette ligne va ouvrir un ficher text dans votre Rstudio. Rajoutez dans ce ficher un linge comme la suivante:
+Cette ligne va ouvrir un ficher text dans votre Rstudio. Rajoutez dans ce ficher une ligne comme la suivante:
 
 
 ```r

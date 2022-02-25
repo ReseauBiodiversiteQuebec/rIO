@@ -1,13 +1,12 @@
 Package: rIO
 Title: Title: R Package For Access and Analysis Of IO, Biodiversité Québec's Geospatial data service
-Version: 0.0.0.9000
+Version: 0.1.0.0
 Authors@R: 
     person(given = "Vincent",
            family = "Beauregard",
            role = c("aut", "cre"),
            email = "vincent.beauregard@usherbrooke.ca")
 Description: `rIO` est un paquet R permettant l'accès aux services de données géospatialies de Biodiversité Québec. Ce paquet R expose les services `RESTFull` de l'API de IO. IO est un service de données géospatiales de la biodiversité du Québec et rend disponible des fonctions pour uniformiser les accès aux données environnementales relative et est développé par le laboratoire d'Écologie Intégrative de l'Université de Sherbrooke.
-
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
