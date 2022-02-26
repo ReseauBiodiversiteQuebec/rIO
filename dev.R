@@ -35,3 +35,14 @@ usethis::use_test("post_gen")
 
 usethis::use_r("post_envelope")
 usethis::use_test("post_envelope")
+
+usethis::use_r("describe_envelopes")
+usethis::use_test("describe_envelopes")
+
+# Load, test and build package and documentation
+devtools::load_all()
+devtools::test()
+devtools::document()
+devtools::install()
+# rmarkdown::render("./vignettes/download-obs.Rmd")
+pkgdown::build_site(examples = FALSE)

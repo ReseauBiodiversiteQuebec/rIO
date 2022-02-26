@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post envelopes — post_envelopes • rIO</title>
+<title>Generic function to access data from Atlas databases — get_gen • rIO</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,11 @@
 
 
 
-<meta property="og:title" content="Post envelopes — post_envelopes" />
-<meta property="og:description" content="The function upload a species distribution model's envelope with related
-information described as arguments to be stored in IO database." />
+<meta property="og:title" content="Generic function to access data from Atlas databases — get_gen" />
+<meta property="og:description" content="Returns Atlas data objects stored within the database.
+Queried data objects are obtained through endpoints corresponding to the name
+of the database object storing the required data
+(ie. taxa, observations, datasets, etc)." />
 
 
 
@@ -104,75 +106,100 @@ information described as arguments to be stored in IO database." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post envelopes</h1>
+    <h1>Generic function to access data from Atlas databases</h1>
     
-    <div class="hidden name"><code>post_envelopes.Rd</code></div>
+    <div class="hidden name"><code>get_gen.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function upload a species distribution model's envelope with related
-information described as arguments to be stored in IO database.</p>
+    <p>Returns Atlas data objects stored within the database.
+Queried data objects are obtained through endpoints corresponding to the name
+of the database object storing the required data
+(ie. taxa, observations, datasets, etc).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>post_envelopes</span><span class='op'>(</span>
-  <span class='va'>geom_ewkt</span>,
-  <span class='va'>category</span>,
-  <span class='va'>taxa_scientific_name</span>,
-  <span class='va'>year</span>,
-  scenario <span class='op'>=</span> <span class='cn'>NULL</span>,
-  threshold_desc <span class='op'>=</span> <span class='cn'>NULL</span>
+    <pre class="usage"><span class='fu'>get_gen</span><span class='op'>(</span>
+  <span class='va'>endpoint</span>,
+  <span class='va'>...</span>,
+  .page_limit <span class='op'>=</span> <span class='fl'>5e+05</span>,
+  .schema <span class='op'>=</span> <span class='st'>"public"</span>,
+  .cores <span class='op'>=</span> <span class='fl'>4</span>,
+  .page_parameters <span class='op'>=</span> <span class='va'>DEFAULT_PAGE_PARAMETERS</span>,
+  .n_pages <span class='op'>=</span> <span class='cn'>NA</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>geom_ewkt</th>
-      <td><p><code>string</code>. Polygon or Multipolygon geometry
-as Extended Well Known Text (EWKT) format with WGS84 as coordinate system
-(SRID = 4326)</p></td>
+      <th>endpoint</th>
+      <td><p><code>character</code>. Name of the atlas data object to be accessed.
+Corresponds to the name of a table, view or stored procedure within Atlas
+Postgresql database, stored within schema <code>public</code> ou <code>api</code></p></td>
     </tr>
     <tr>
-      <th>category</th>
-      <td><p><code>string</code>. One of either values <code>current</code> or <code>projected</code>.
-Describes if envelopes are modeled at <code>current</code> observations and environment
-variables or <code>projected</code> in future conditions.</p></td>
+      <th>...</th>
+      <td><p><code>character</code> or <code>numeric</code> scalar or vector.
+Additional parameters to filter the returned objects. Accepts
+parameters corresponding to an object attribute or table columns
+(ie. <code>id = c(3,4)</code>) or a specific parameters related to postgrest http
+request parameters and syntax(<code>select = ...</code>)</p></td>
     </tr>
     <tr>
-      <th>taxa_scientific_name</th>
-      <td><p><code>string</code>. Scientific name of organism for which
-the distribution is modeled.</p></td>
+      <th>.page_limit</th>
+      <td><p><code>integer</code> Count of objects returned through pagination</p></td>
     </tr>
     <tr>
-      <th>year</th>
-      <td><p><code>integer</code>. Reference year for <code>current</code> or <code>projected</code>
-distribution envelope.</p></td>
+      <th>.schema</th>
+      <td><p><code>character</code> Schema from the database where is located the data
+object is located. Accept either values <code>api</code> or <code>public</code> (default)</p></td>
     </tr>
     <tr>
-      <th>scenario</th>
-      <td><p><code>string</code> Optional. Name of the scenarion describing projected
-environment variables.</p></td>
+      <th>.cores</th>
+      <td><p><code>integer</code> default <code>4</code>. Number of cores used to parallelize and
+improve rapidity</p></td>
     </tr>
     <tr>
-      <th>threshold_desc</th>
-      <td><p><code>string</code> Optional. Name or short description for SDM
-thresholding methodology to generate a binary.</p></td>
+      <th>.page_parameters</th>
+      <td><p><code>list</code> default
+<code><a href='https://rdrr.io/r/base/list.html'>list(limit = "limit", offset = "offset")</a></code>. Parameters names sent to http
+query to be consumed by the endpoint for pagination</p></td>
+    </tr>
+    <tr>
+      <th>.token</th>
+      <td><p><code>character</code> Bearer token providing access to the web api</p></td>
+    </tr>
+    <tr>
+      <th>..n_pages</th>
+      <td><p><code>integer</code> default NULL. Estimated if none provided</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>NULL when successful</p>
+    <p><code>tibble</code> with rows associated with Atlas data object</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function is designed to interface with a web API deployed with PostgREST</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Insert a small enveloppe for the newly discovered species `Binto binto`</span>
-<span class='va'>response</span> <span class='op'>&lt;-</span> <span class='fu'>post_envelopes</span><span class='op'>(</span>
- geom_ewkt <span class='op'>=</span> <span class='st'>"SRID=4326;POLYGON((-76.355 37.009,-76.350 37.010,-76.349 37.001,-76.354 37.001,-76.355 37.009))"</span>,
- category <span class='op'>=</span> <span class='st'>"current"</span>,
- taxa_scientific_name <span class='op'>=</span> <span class='st'>"Binto binto"</span>,
- year <span class='op'>=</span> <span class='fl'>2022</span>,
- scenario <span class='op'>=</span> <span class='cn'>NULL</span>,
- threshold_desc <span class='op'>=</span> <span class='cn'>NULL</span>
+    <pre class="examples"><span class='co'># Returns all available taxa records in atlas</span>
+<span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'>get_gen</span><span class='op'>(</span><span class='st'>"taxa"</span><span class='op'>)</span>
+
+<span class='co'># Returns all taxa filtered by the column id values</span>
+<span class='va'>taxa</span> <span class='op'>&lt;-</span> <span class='fu'>get_gen</span><span class='op'>(</span><span class='st'>"taxa"</span>, id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>188</span>, <span class='fl'>201</span>, <span class='fl'>294</span>, <span class='fl'>392</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Returns first 100 sampling_points from schema `api`</span>
+<span class='va'>sampling_points</span> <span class='op'>&lt;-</span> <span class='fu'>get_gen</span><span class='op'>(</span>
+  <span class='st'>"bird_sampling_points"</span>,
+  .schema <span class='op'>=</span> <span class='st'>"api"</span>,
+  limit <span class='op'>=</span> <span class='fl'>100</span>
+<span class='op'>)</span>
+
+<span class='co'># Returns first 100 observations with selected columns and joined columns</span>
+<span class='fu'>get_gen</span><span class='op'>(</span><span class='st'>"observations"</span>,
+  limit <span class='op'>=</span> <span class='fl'>100</span>,
+  select <span class='op'>=</span> <span class='st'>"geom,year_obs,month_obs,day_obs,obs_value,taxa(scientific_name)"</span>
 <span class='op'>)</span>
 </pre>
   </div>

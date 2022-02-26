@@ -1,6 +1,6 @@
 Package: rIO
 Title: Title: R Package For Access and Analysis Of IO, Biodiversité Québec's Geospatial data service
-Version: 0.1.0.0
+Version: 0.1.1.0
 Authors@R: 
     person(given = "Vincent",
            family = "Beauregard",

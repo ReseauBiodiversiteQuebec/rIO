@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post envelopes — post_envelopes • rIO</title>
+<title>Describe envelopes — describe_envelopes • rIO</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,15 @@
 
 
 
-<meta property="og:title" content="Post envelopes — post_envelopes" />
-<meta property="og:description" content="The function upload a species distribution model's envelope with related
-information described as arguments to be stored in IO database." />
+<meta property="og:title" content="Describe envelopes — describe_envelopes" />
+<meta property="og:description" content="The function downloads and returns a list or dataframe containing a
+description for each requested species distribution envelope where a row
+corresponds to a record. The function returns a dataframe for all envelopes
+if no parameters are specified. The function filters returned envelopes
+record by attributes corresponding to io table columns specified as
+parameters (ie. id, taxa_scientific_name, scenario, year, etc)
+with accepted values either being scalar or vector for single or multiple
+records" />
 
 
 
@@ -104,76 +110,45 @@ information described as arguments to be stored in IO database." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Post envelopes</h1>
+    <h1>Describe envelopes</h1>
     
-    <div class="hidden name"><code>post_envelopes.Rd</code></div>
+    <div class="hidden name"><code>describe_envelopes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function upload a species distribution model's envelope with related
-information described as arguments to be stored in IO database.</p>
+    <p>The function downloads and returns a list or dataframe containing a
+description for each requested species distribution envelope where a row
+corresponds to a record. The function returns a dataframe for all envelopes
+if no parameters are specified. The function filters returned envelopes
+record by attributes corresponding to io table columns specified as
+parameters (ie. <code>id</code>, <code>taxa_scientific_name</code>, <code>scenario</code>, <code>year</code>, etc)
+with accepted values either being scalar or vector for single or multiple
+records</p>
     </div>
 
-    <pre class="usage"><span class='fu'>post_envelopes</span><span class='op'>(</span>
-  <span class='va'>geom_ewkt</span>,
-  <span class='va'>category</span>,
-  <span class='va'>taxa_scientific_name</span>,
-  <span class='va'>year</span>,
-  scenario <span class='op'>=</span> <span class='cn'>NULL</span>,
-  threshold_desc <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>describe_envelopes</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>geom_ewkt</th>
-      <td><p><code>string</code>. Polygon or Multipolygon geometry
-as Extended Well Known Text (EWKT) format with WGS84 as coordinate system
-(SRID = 4326)</p></td>
-    </tr>
-    <tr>
-      <th>category</th>
-      <td><p><code>string</code>. One of either values <code>current</code> or <code>projected</code>.
-Describes if envelopes are modeled at <code>current</code> observations and environment
-variables or <code>projected</code> in future conditions.</p></td>
-    </tr>
-    <tr>
-      <th>taxa_scientific_name</th>
-      <td><p><code>string</code>. Scientific name of organism for which
-the distribution is modeled.</p></td>
-    </tr>
-    <tr>
-      <th>year</th>
-      <td><p><code>integer</code>. Reference year for <code>current</code> or <code>projected</code>
-distribution envelope.</p></td>
-    </tr>
-    <tr>
-      <th>scenario</th>
-      <td><p><code>string</code> Optional. Name of the scenarion describing projected
-environment variables.</p></td>
-    </tr>
-    <tr>
-      <th>threshold_desc</th>
-      <td><p><code>string</code> Optional. Name or short description for SDM
-thresholding methodology to generate a binary.</p></td>
+      <th>...</th>
+      <td><p>Optional. scalar or vector. Returns a dataframe filtered by the
+io <code>envelopes</code> table columns specified as parameter</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>NULL when successful</p>
+    <p><code>tibble</code> with rows associated with IO data object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Insert a small enveloppe for the newly discovered species `Binto binto`</span>
-<span class='va'>response</span> <span class='op'>&lt;-</span> <span class='fu'>post_envelopes</span><span class='op'>(</span>
- geom_ewkt <span class='op'>=</span> <span class='st'>"SRID=4326;POLYGON((-76.355 37.009,-76.350 37.010,-76.349 37.001,-76.354 37.001,-76.355 37.009))"</span>,
- category <span class='op'>=</span> <span class='st'>"current"</span>,
- taxa_scientific_name <span class='op'>=</span> <span class='st'>"Binto binto"</span>,
- year <span class='op'>=</span> <span class='fl'>2022</span>,
- scenario <span class='op'>=</span> <span class='cn'>NULL</span>,
- threshold_desc <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span>
+    <pre class="examples"><span class='co'># Returns all available envelopes records in io</span>
+<span class='va'>envelopes</span> <span class='op'>&lt;-</span> <span class='fu'>describe_envelopes</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Returns all envelopes filtered by the column `original_source`</span>
+<span class='va'>envelopes</span> <span class='op'>&lt;-</span> <span class='fu'>describe_envelopes</span><span class='op'>(</span>taxa_scientific_name <span class='op'>=</span> <span class='st'>"Binto binto"</span><span class='op'>)</span>
+
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
